@@ -38,8 +38,6 @@ export default defineComponent({
     const currentPage = computed(() => store.state.currentPage);
     const totalPages = computed(() => store.state.totalPages);
 
-    console.log("Total pages: ", store.state.totalPages);
-
     const handlePageChange = (page: number) => {
       const query = store.state.searchQuery || "";
       searchMovies(query, page);
@@ -49,7 +47,7 @@ export default defineComponent({
       movies,
       currentPage,
       totalPages,
-      handlePageChange,
+      handlePageChange
     };
   },
 });

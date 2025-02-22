@@ -11,16 +11,17 @@ export function useMovies() {
   const searchMovies = async (title: string, page: number = 1) => {
     loading.value = true
     error.value = null
-    
     try {
       const response = await axios.get<MovieApiResponse>(
         `https://jsonmock.hackerrank.com/api/movies/search/?Title=${title}&page=${page}`
       )
+      console.log('response.data.data: ', response)
       store.commit('setSearchResults', response.data.data)
       store.commit('setTotalPages', response.data.total_pages)
       store.commit('setCurrentPage', page)
     } catch (e) {
       error.value = 'Failed to fetch movies'
+      console.log('Caught error:', e)  // ✅ Debugging log
     } finally {
       loading.value = false
     }

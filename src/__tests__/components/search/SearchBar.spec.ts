@@ -1,41 +1,76 @@
-import { mount } from '@vue/test-utils'
-import SearchBar from '@/components/search/SearchBar.vue'
-import { createStore } from 'vuex'
+import {mount} from '@vue/test-utils'
+import SearchBar from '../../../components/search/SearchBar.vue'
+import {createStore} from 'vuex'
+import {vi, expect} from 'vitest'
+
+const mutations = {
+    setSearchQuery: vi.fn()
+}
+
+const store = createStore({
+    state: {
+        searchQuery: ''
+    },
+    mutations
+})
+
+// Mock useMovies composable
+vi.mock('../../../composables/useMovies', () => ({
+    useMovies: () => ({
+        loading: false,
+        searchMovies: vi.fn()
+    })
+}))
 
 describe('SearchBar.vue', () => {
-  const store = createStore({
-    state: {
-      searchQuery: ''
-    },
-    mutations: {
-      setSearchQuery: (state, query) => state.searchQuery = query
-    }
-  })
+    let wrapper: any
 
-  it('updates search query on input', async () => {
-    const wrapper = mount(SearchBar, {
-      global: {
-        plugins: [store]
-      }
+    beforeEach(() => {
+        wrapper = mount(SearchBar, {
+            global: {
+                plugins: [store]
+            }
+        })
     })
 
-    const input = wrapper.find('input')
-    await input.setValue('test movie')
-    await input.trigger('keyup.enter')
-
-    expect(store.state.searchQuery).toBe('test movie')
-  })
-
-  it('clears search on refresh button click', async () => {
-    const wrapper = mount(SearchBar, {
-      global: {
-        plugins: [store]
-      }
+    it('renders the search bar', () => {
+        expect(wrapper.find('.search-bar').exists()).toBe(true)
     })
 
-    const refreshBtn = wrapper.find('.refresh-btn')
-    await refreshBtn.trigger('click')
+    it('updates search input correctly', async () => {
+        const input = wrapper.find('input')
+        await input.setValue('Inception')
+        expect(wrapper.vm.searchQuery).toBe('Inception')
+    })
 
-    expect(store.state.searchQuery).toBe('')
-  })
+    it('calls handleSearch on enter key', async () => {
+        const input = wrapper.find('input')
+        await input.setValue('Avatar')
+        await input.trigger('keyup.enter')
+        await new Promise((r) => setTimeout(r, 350)) // Wait for debounce
+        expect(mutations.setSearchQuery).toHaveBeenCalledWith(expect.any(Object), 'Avatar')
+    })
+
+    it('calls showAllMovies when refresh button is clicked', async () => {
+        const button = wrapper.find('.refresh-btn')
+        await button.trigger('click')
+        expect(mutations.setSearchQuery).toHaveBeenCalledWith(expect.any(Object), '')
+    })
+
+    it('shows loading indicator when loading is true', async () => {
+        vi.mock('@/composables/useMovies', () => ({
+            useMovies: () => ({
+                loading: true,
+                searchMovies: vi.fn()
+            })
+        }))
+
+        wrapper = mount(SearchBar, {
+            global: {
+                plugins: [store]
+            }
+        })
+
+        expect(wrapper.find('.loader').exists()).toBe(true)
+    })
 })
