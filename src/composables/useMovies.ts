@@ -21,7 +21,6 @@ export function useMovies() {
       store.commit('setCurrentPage', page)
     } catch (e) {
       error.value = 'Failed to fetch movies'
-      console.log('Caught error:', e)  // ✅ Debugging log
     } finally {
       loading.value = false
     }

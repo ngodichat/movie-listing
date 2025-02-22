@@ -1,6 +1,6 @@
 <template>
   <div class="pagination">
-    <button @click="handlePrevious" :disabled="currentPage === 1">
+    <button class="prevBtn" @click="handlePrevious" :disabled="currentPage === 1">
       Previous
     </button>
 
@@ -15,7 +15,7 @@
       </button>
     </div>
 
-    <button @click="handleNext" :disabled="currentPage === totalPages">
+    <button class="nextBtn" @click="handleNext" :disabled="currentPage === totalPages">
       Next
     </button>
   </div>
