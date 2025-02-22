@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "test:unit": "jest",
     "test:e2e": "cypress open",
-    "test": "npm run test:unit && npm run test:e2e"
+    "test": "vitest"
   },
   "dependencies": {
     "@vueuse/core": "^12.7.0",
