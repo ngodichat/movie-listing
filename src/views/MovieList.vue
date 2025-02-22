@@ -31,15 +31,17 @@ export default defineComponent({
 
     onMounted(() => {
       // This will load all movies on initial mount
-      searchMovies("movie", 1);
+      searchMovies("", 1);
     });
 
     const movies = computed(() => store.state.searchResults);
     const currentPage = computed(() => store.state.currentPage);
     const totalPages = computed(() => store.state.totalPages);
 
+    console.log("Total pages: ", store.state.totalPages);
+
     const handlePageChange = (page: number) => {
-      const query = store.state.searchQuery || "movie";
+      const query = store.state.searchQuery || "";
       searchMovies(query, page);
     };
 
