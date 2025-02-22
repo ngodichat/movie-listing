@@ -18,24 +18,25 @@ A modern Vue 3 application for browsing and managing your favorite movies. Built
 - Vuex 4 for state management
 - SCSS for styling
 - Vite for build tooling
-- Jest for unit testing
+- Vitest for unit testing
+- Cypress for integration testing
 - Axios for API calls
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
+- Node.js (v20 or higher)
 - npm or yarn
 
 ### Installation
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/movie-listing-app.git
+git clone https://github.com/ngodichat/movie-listing.git
 
 2. Install dependencies
-cd movie-listing-app
+cd movie-listing
 npm install
 
 3. Start development server
@@ -43,3 +44,9 @@ npm run dev
 
 4. Build for production
 npm run build
+
+5. Run unit test
+npm run test
+
+6. Run integration test
+npm run test:e2e
