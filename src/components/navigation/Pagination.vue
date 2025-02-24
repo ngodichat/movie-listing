@@ -1,21 +1,29 @@
 <template>
   <div class="pagination">
-    <button class="prevBtn" @click="handlePrevious" :disabled="currentPage === 1">
+    <button
+        class="prevBtn"
+        @click="handlePrevious"
+        :disabled="currentPage === 1"
+    >
       Previous
     </button>
 
     <div class="pages">
       <button
-        v-for="page in displayedPages"
-        :key="page"
-        :class="{ active: page === currentPage }"
-        @click="$emit('page-change', page)"
+          v-for="page in displayedPages"
+          :key="page"
+          :class="{ active: page === currentPage }"
+          @click="page !== -1 ? $emit('page-change', page) : null"
       >
-        {{ page }}
+        {{ page === -1 ? "..." : page }}
       </button>
     </div>
 
-    <button class="nextBtn" @click="handleNext" :disabled="currentPage === totalPages">
+    <button
+        class="nextBtn"
+        @click="handleNext"
+        :disabled="currentPage === totalPages"
+    >
       Next
     </button>
   </div>
@@ -39,13 +47,33 @@ export default defineComponent({
   emits: ["page-change"],
   setup(props, { emit }) {
     const displayedPages = computed(() => {
-      const pages: number[] = []; // Explicitly type the array as number[]
-      const start = Math.max(1, props.currentPage - 2);
-      const end = Math.min(props.totalPages, props.currentPage + 2);
+      const pages: number[] = [];
 
-      for (let i = start; i <= end; i++) {
+      // Always show first page
+      pages.push(1);
+
+      if (props.currentPage > 3) {
+        pages.push(-1); // -1 will represent ellipsis "..."
+      }
+
+      // Show pages around current page
+      for (
+          let i = Math.max(2, props.currentPage - 1);
+          i <= Math.min(props.totalPages - 1, props.currentPage + 1);
+          i++
+      ) {
         pages.push(i);
       }
+
+      if (props.currentPage < props.totalPages - 2) {
+        pages.push(-1); // ellipsis
+      }
+
+      // Always show last page if there is more than one page
+      if (props.totalPages > 1) {
+        pages.push(props.totalPages);
+      }
+
       return pages;
     });
 
