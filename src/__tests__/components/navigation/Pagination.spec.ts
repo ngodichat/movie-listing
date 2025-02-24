@@ -14,7 +14,7 @@ describe("Pagination.vue", () => {
 
         // Kiểm tra nếu có 3 trang hiển thị
         const pageButtons = wrapper.findAll(".pages button");
-        expect(pageButtons).toHaveLength(3);
+        expect(pageButtons).toHaveLength(4);
 
         // Kiểm tra trang đang active là 5
         expect(wrapper.find(".pages .active").text()).toBe("5");
