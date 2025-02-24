@@ -44,7 +44,7 @@ export default defineComponent({
       searchQuery.value = ''
       store.commit('setSearchQuery', '')
       // Using a default search term that will return many movies
-      searchMovies('movie', 1)
+      searchMovies('', 1)
     }
 
     return {
