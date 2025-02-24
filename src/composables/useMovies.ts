@@ -15,7 +15,6 @@ export function useMovies() {
       const response = await axios.get<MovieApiResponse>(
         `https://jsonmock.hackerrank.com/api/movies/search/?Title=${title}&page=${page}`
       )
-      console.log('response.data.data: ', response)
       store.commit('setSearchResults', response.data.data)
       store.commit('setTotalPages', response.data.total_pages)
       store.commit('setCurrentPage', page)
